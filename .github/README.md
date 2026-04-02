@@ -111,6 +111,7 @@ Variant disponibili:
 |---------|-------|
 | `backend-java-spring.md` | Java 17, Spring Boot, JUnit 5, Mockito |
 | `backend-node.md` | Node.js, Express/Fastify, TypeScript, Jest *(DRAFT)* |
+| `backend-platformatic.md` | Node.js 22, Platformatic DB v3, WattPM, TypeScript 5.5, PostgreSQL |
 | `frontend-react-ts.md` | React + TypeScript, Jest, React Testing Library |
 | `frontend-vue.md` | Vue 3 + TypeScript, Vitest *(DRAFT)* |
 
@@ -199,7 +200,12 @@ cp .github/variants/providers/ticket-redmine.md .github/context/providers/ticket
 cp .github/variants/providers/review-gitlab-mcp.md .github/context/providers/code-review.md
 ```
 
-> **Nota:** il variant Redmine è in stato DRAFT — i nomi dei tool MCP sono placeholder `<<TODO>>`. Dovrai compilarli quando il tuo server MCP Redmine sarà disponibile.
+Compila le costanti in `ticket-manager.md`:
+- `<<REDMINE_PROJECT_ID>>` → es. `my-project`
+- `<<REDMINE_BASE_URL>>` → es. `https://redmine.mycompany.com`
+- `<<REDMINE_API_KEY>>` → chiave API personale (da `/my/account` su Redmine)
+
+> **Sicurezza:** Non committare mai la chiave API. Usarla come variabile d'ambiente o tenerla fuori dal version control.
 
 ---
 
@@ -216,7 +222,7 @@ Funziona tutto:
 
 ## Cosa contiene il template
 
-### Agent (6)
+### Agent (7)
 
 Gli agent sono subagent specializzati con personalità, tool e workflow dedicati.
 
@@ -228,8 +234,9 @@ Gli agent sono subagent specializzati con personalità, tool e workflow dedicati
 | `review` | Revisione di MR/PR contro gli standard del progetto | "review MR", "review PR", "code review" |
 | `ticket-description` | Scrivere descrizioni ticket nel formato del tracker | "write ticket description" |
 | `changeset-description` | Scrivere descrizioni MR/PR | "write MR description", "write PR description" |
+| `prd-tickets` | Sincronizzare PRD.md con il tracker — creare ticket e aggiornare riferimenti | "create tickets from PRD", "sync PRD with tracker" |
 
-### Skill (8)
+### Skill (9)
 
 Le skill sono workflow riusabili caricati dagli agent.
 
@@ -243,6 +250,7 @@ Le skill sono workflow riusabili caricati dagli agent.
 | `write-tests-be` | Genera classi di test backend |
 | `write-tests-fe` | Genera file di test frontend |
 | `run-test-coverage` | Esegue i test e analizza la coverage |
+| `create-tickets-from-prd` | Scansiona PRD.md, crea ticket per gli item senza riferimento, aggiorna il PRD |
 
 ### Prompt (9)
 
@@ -418,7 +426,8 @@ cp .github/variants/providers/ticket-linear.md .github/context/providers/ticket-
 │   ├── design.agent.md                 ← Design → component spec
 │   ├── review.agent.md                 ← Review changeset (MR/PR)
 │   ├── ticket-description.agent.md     ← Descrizione ticket
-│   └── changeset-description.agent.md  ← Descrizione changeset (MR/PR)
+│   ├── changeset-description.agent.md  ← Descrizione changeset (MR/PR)
+│   └── prd-tickets.agent.md            ← Sync PRD.md ↔ tracker
 ├── skills/
 │   ├── analyze-ticket/SKILL.md
 │   ├── design-to-spec/SKILL.md
@@ -427,7 +436,8 @@ cp .github/variants/providers/ticket-linear.md .github/context/providers/ticket-
 │   ├── write-changeset-description/SKILL.md
 │   ├── write-tests-be/SKILL.md
 │   ├── write-tests-fe/SKILL.md
-│   └── run-test-coverage/SKILL.md
+│   ├── run-test-coverage/SKILL.md
+│   └── create-tickets-from-prd/SKILL.md  ← Scansiona PRD, crea ticket, aggiorna refs
 ├── instructions/
 │   ├── core.instructions.md             ← Sempre attivo su tutti i file
 │   ├── development.instructions.md      ← Attivo su src/**
@@ -461,11 +471,12 @@ cp .github/variants/providers/ticket-linear.md .github/context/providers/ticket-
 └── variants/
     ├── backend-java-spring.md
     ├── backend-node.md
+    ├── backend-platformatic.md          ← Node.js 22, Platformatic DB v3, WattPM
     ├── frontend-react-ts.md
     ├── frontend-vue.md
     └── providers/
         ├── ticket-jira-atlassian-mcp.md  ← Jira via Atlassian MCP
-        ├── ticket-redmine.md             ← Redmine (DRAFT)
+        ├── ticket-redmine.md             ← Redmine REST API (curl)
         ├── ticket-github-issues.md       ← GitHub Issues (DRAFT)
         ├── review-gitlab-mcp.md          ← GitLab MR via GitLab MCP
         ├── review-github.md              ← GitHub PR (DRAFT)
@@ -479,6 +490,7 @@ cp .github/variants/providers/ticket-linear.md .github/context/providers/ticket-
 - **Nomi file fissi** — Le skill leggono sempre `context/best-practices/backend.md` e `frontend.md`. Seleziona un variant copiandolo con quei nomi.
 - **Tool MCP deferred** — I tool MCP non sono disponibili finché non vengono caricati. Le skill leggono il provider config per scoprire il pattern di caricamento e i nomi dei tool.
 - **Formato provider standard** — Ogni provider config segue lo stesso formato: MCP Loading, Constants, Operations, Output Format. Vedi `context/providers/README.md`.
+- **REST provider** — I provider che usano curl (es. Redmine) non hanno una sezione MCP Loading. Le skill usano `run_in_terminal` direttamente.
 - **Ticket ID dal provider** — Il pattern per riconoscere i ticket ID viene letto dal provider `ticket-manager.md` → Constants → Ticket pattern.
 - **Spec-before-code (SDD)** — La skill `analyze-ticket` obbliga a leggere `context/PRD.md` e `context/architecture.md` prima di qualsiasi analisi del codice.
 - **Workflow composabili** — Analisi, Design, Sviluppo, Test e Review sono entry point indipendenti. Non c'è una pipeline obbligatoria.
@@ -493,7 +505,7 @@ cp .github/variants/providers/ticket-linear.md .github/context/providers/ticket-
 
 ### Cosa succede se il mio strumento non ha un variant?
 
-Crea il tuo variant seguendo il [formato standard](#come-creare-un-nuovo-provider). Le operazioni necessarie per ogni slot sono documentate sopra. Puoi anche partire da un variant DRAFT (es. `ticket-redmine.md`) come modello.
+Crea il tuo variant seguendo il [formato standard](#come-creare-un-nuovo-provider). Le operazioni necessarie per ogni slot sono documentate sopra. Puoi anche partire da un variant (es. `ticket-redmine.md`) come modello.
 
 ### Posso usare GitHub per i PR e Jira per i ticket?
 

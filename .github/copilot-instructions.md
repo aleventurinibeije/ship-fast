@@ -14,6 +14,7 @@
 | Review a changeset (MR/PR) by URL | `review` |
 | Write a changeset (MR/PR) description for a ticket | `changeset-description` |
 | Write a ticket description in the configured tracker's format | `ticket-description` |
+| Create tickets from PRD and sync references back | `prd-tickets` |
 
 ---
 
