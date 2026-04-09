@@ -5,11 +5,12 @@
      using the fixed filenames below.
 
      SETUP STEPS:
-     1. Go to the copilot-template/variants/ folder
+     1. Go to the .github/stack/ folder
      2. Copy the variant that matches your stack:
-           cp variants/backend-java-spring.md context/best-practices/backend.md
-           cp variants/frontend-react-ts.md   context/best-practices/frontend.md
+           cp stack/be-java-spring.md context/best-practices/backend.md
+           cp stack/fe-react-ts.md    context/best-practices/frontend.md
      3. Edit the copied files to match your project's specific conventions.
+     Or run `@bootstrap` — it detects your stack and does all of this automatically.
 
      ACTIVE FILES (must use these exact names):
      - backend.md  ← backend coding rules, test conventions, patterns

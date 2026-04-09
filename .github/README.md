@@ -20,18 +20,22 @@ Un framework portabile per GitHub Copilot Agent, pensato per progetti BE + FE. F
 
 ## Quick Start
 
+**Option A — Automated (recommended):** run `@bootstrap` after copying `.github/` to let the agent detect your stack, collect provider constants, and scaffold all config files automatically.
+
+**Option B — Manual:**
+
 ```bash
 # 1. Copia il template nel tuo progetto
 cp -r copilot-template/.github /path/to/your-project/
 
 # 2. Scegli le best-practice per il tuo stack
-cp .github/variants/backend-java-spring.md .github/context/best-practices/backend.md
-cp .github/variants/frontend-react-ts.md   .github/context/best-practices/frontend.md
+cp .github/stack/be-java-spring.md .github/context/best-practices/backend.md
+cp .github/stack/fe-react-ts.md    .github/context/best-practices/frontend.md
 
 # 3. Scegli i provider per le tue integrazioni
-cp .github/variants/providers/ticket-jira-atlassian-mcp.md .github/context/providers/ticket-manager.md
-cp .github/variants/providers/review-gitlab-mcp.md         .github/context/providers/code-review.md
-cp .github/variants/providers/design-figma-mcp.md          .github/context/providers/design-tool.md
+cp .github/stack/providers/ticket-jira.md     .github/context/providers/ticket-manager.md
+cp .github/stack/providers/review-github.md  .github/context/providers/code-review.md
+cp .github/stack/providers/design-figma.md   .github/context/providers/design-tool.md
 
 # 4. Compila i file context/ e sostituisci <<PROJECT_NAME>> in copilot-instructions.md
 
@@ -63,8 +67,8 @@ Il template usa un modello a **3 slot** per le integrazioni esterne. Ogni slot �
    │ Linear        │  │ Azure DevOps │  │             │
    │ ...           │  │ ...          │  │             │
    └───────────────┘  └──────────────┘  └─────────────┘
-        variants/           variants/        variants/
-        providers/           providers/       providers/
+        stack/              stack/           stack/
+        providers/          providers/       providers/
 ```
 
 **Regola fondamentale:** le skill NON hardcodano mai nomi di tool MCP. Leggono il provider config → caricano i tool → chiamano le operazioni.
@@ -101,19 +105,19 @@ Ogni file ha un commento che spiega cosa inserire.
 
 ```bash
 # Esempio: Java/Spring BE + React/TS FE
-cp .github/variants/backend-java-spring.md .github/context/best-practices/backend.md
-cp .github/variants/frontend-react-ts.md   .github/context/best-practices/frontend.md
+cp .github/stack/be-java-spring.md .github/context/best-practices/backend.md
+cp .github/stack/fe-react-ts.md    .github/context/best-practices/frontend.md
 ```
 
 Variant disponibili:
 
-| Variant | Stack |
-|---------|-------|
-| `backend-java-spring.md` | Java 17, Spring Boot, JUnit 5, Mockito |
-| `backend-node.md` | Node.js, Express/Fastify, TypeScript, Jest *(DRAFT)* |
-| `backend-platformatic.md` | Node.js 22, Platformatic DB v3, WattPM, TypeScript 5.5, PostgreSQL |
-| `frontend-react-ts.md` | React + TypeScript, Jest, React Testing Library |
-| `frontend-vue.md` | Vue 3 + TypeScript, Vitest *(DRAFT)* |
+| File | Stack |
+|------|---------|
+| `stack/be-java-spring.md` | Java 17, Spring Boot, JUnit 5, Mockito |
+| `stack/be-node-generic.md` | Node.js, Express/Fastify, TypeScript, Jest *(DRAFT)* |
+| `stack/be-node-platformatic.md` | Node.js 22, Platformatic DB v3, WattPM, TypeScript 5.5, PostgreSQL |
+| `stack/fe-react-ts.md` | React + TypeScript, Jest, React Testing Library |
+| `stack/fe-vue.md` | Vue 3 + TypeScript, Vitest *(DRAFT)* |
 
 ### 4. Configura i provider
 

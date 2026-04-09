@@ -27,23 +27,12 @@ Read before writing:
 
 ### Step 0 — Load Providers (if needed)
 
-1. Read `.github/context/providers/code-review.md`
-2. If a changeset URL is provided and the provider is configured, extract the **Load pattern** and call:
+Follow the **Standard Provider Loading Steps** from `.github/context/providers/LOADING-PROTOCOL.md`.
 
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_code_review_provider}
-```
+- Load **code-review** provider (`.github/context/providers/code-review.md`) if a changeset URL is provided
+- Load **ticket-manager** provider (`.github/context/providers/ticket-manager.md`) if ticket context is needed
 
-3. Read `.github/context/providers/ticket-manager.md`
-4. If ticket context is needed and the provider is configured, extract its **Load pattern** and call:
-
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_ticket_manager_provider}
-```
-
-Both can be called in parallel if both are needed.
+Both `tool_search_tool_regex` calls can be made in parallel once both provider config files have been read.
 
 ---
 

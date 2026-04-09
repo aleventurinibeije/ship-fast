@@ -26,16 +26,9 @@ Read before writing:
 
 ### Step 0 — Load Provider (if configured)
 
-1. Read `.github/context/providers/ticket-manager.md`
-2. If the file is a placeholder (contains only HTML comments), **no MCP provider is configured** — skip MCP steps and ask the user for ticket details manually
-3. If configured, extract the **Load pattern** from `## MCP Loading` and call:
+Follow the **Standard Provider Loading Steps** from `.github/context/providers/LOADING-PROTOCOL.md` for the **ticket-manager** provider (`.github/context/providers/ticket-manager.md`).
 
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_provider}
-```
-
-4. Extract **Constants** and **Output Format** sections — store both for later steps.
+Extract and store the **Constants** and **Output Format** sections for use in all subsequent steps.
 
 ---
 

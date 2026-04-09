@@ -17,8 +17,7 @@ Use this skill to generate unit and/or integration test files for existing backe
 ## Prerequisites
 
 Read before generating:
-- `.github/context/best-practices/backend.md` — test framework, test class structure, naming convention, coverage targets, assertion library
-- `.github/context/architecture.md` — module layout, dependencies, key concepts
+- `.github/context/CONTEXT-SNAPSHOT.md` — test framework, class structure, naming conventions, assertion library, module layout (replaces backend.md + architecture.md)
 
 ---
 
@@ -26,12 +25,11 @@ Read before generating:
 
 ### Step 1 — Load Best Practices
 
-Read `.github/context/best-practices/backend.md` in full. Extract:
-- Test framework and imports (JUnit 5 / Mockito / AssertJ or equivalent)
-- Test class structure (unit vs integration annotations)
+Read `.github/context/CONTEXT-SNAPSHOT.md` → **Testing** section. Extract:
+- Test framework and imports (`node:test` + `node:assert/strict`)
+- Test types: unit (bare Fastify) vs integration (`getServer(t)`)
 - Test naming convention
-- Assertion library preference
-- Coverage targets
+- How to run tests (`pnpm test`)
 
 ### Step 2 — Read the Target Class
 

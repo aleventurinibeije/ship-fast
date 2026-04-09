@@ -19,8 +19,9 @@ Use this skill to review a changeset (merge request / pull request) from a URL.
 Read before starting:
 - `.github/instructions/core.instructions.md`
 - `.github/instructions/review.instructions.md`
-- `.github/context/architecture.md`
+- `.github/context/CONTEXT-SNAPSHOT.md` — tech stack, module layout, auth layers, RBAC rules (replaces architecture.md + best-practices)
 - `.github/context/providers/code-review.md` — **REQUIRED:** MCP tools, operations, constants
+- `.github/context/providers/LOADING-PROTOCOL.md` — provider loading steps (use for Step 0)
 
 ---
 
@@ -28,18 +29,9 @@ Read before starting:
 
 ### Step 0 — Load Provider and MCP Tools (MANDATORY FIRST STEP)
 
-1. Read `.github/context/providers/code-review.md`
-2. Extract the **Load pattern** from the `## MCP Loading` section
-3. Call `tool_search_tool_regex` with that pattern
+Follow the **Standard Provider Loading Steps** from `.github/context/providers/LOADING-PROTOCOL.md` for the **code-review** provider (`.github/context/providers/code-review.md`).
 
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_provider}
-```
-
-Wait for results. Do NOT proceed until complete.
-
-4. Extract the **Constants** (project ID, etc.) and store them for use in subsequent steps.
+Extract and store the **Constants** (project ID, etc.) for use in subsequent steps.
 
 ---
 
@@ -75,7 +67,7 @@ Note already-raised concerns to avoid duplicating them.
 1. If a ticket ID was found, check for analysis doc: `docs/AI-analysis-plan-docs/{TICKET-ID}/ANALYSIS-{TICKET-ID}.md`
 2. Read all changed source files from the diffs
 3. Read coupled dependencies (files imported/called by the changed files)
-4. Re-read `.github/context/best-practices/backend.md` or `frontend.md` as appropriate
+4. CONTEXT-SNAPSHOT.md already covers best-practices; dive into `best-practices/backend.md` or `frontend.md` directly only if reviewing non-standard patterns not covered in the snapshot
 
 ### Step 6 — Apply Review Checklist
 

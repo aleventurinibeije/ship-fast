@@ -15,6 +15,9 @@
 | Write a changeset (MR/PR) description for a ticket | `changeset-description` |
 | Write a ticket description in the configured tracker's format | `ticket-description` |
 | Create tickets from PRD and sync references back | `prd-tickets` |
+| Configure .github/context/ for a new project | `bootstrap` |
+| Generate PRD + CONTEXT-SNAPSHOT from raw docs in docs/ | `context-builder` |
+| Create or update the PRD from analysis docs and user stories | `prd-writer` |
 
 ---
 
@@ -43,4 +46,4 @@ MCP tools for external integrations are **deferred** — they are NOT available 
 | Code review | `context/providers/code-review.md` | MR/PR platform (GitLab, GitHub, Bitbucket, etc.) |
 | Design tool | `context/providers/design-tool.md` | Design tool (Figma, Sketch, etc.) — optional |
 
-See `context/providers/README.md` for setup instructions and the full provider config format.
+See `context/providers/LOADING-PROTOCOL.md` for the shared loading steps used by all skills.

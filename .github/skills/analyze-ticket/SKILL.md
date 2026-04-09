@@ -20,8 +20,9 @@ Read before starting:
 - `.github/instructions/core.instructions.md`
 - `.github/instructions/analysis.instructions.md`
 - `.github/context/PRD.md`
-- `.github/context/architecture.md`
+- `.github/context/CONTEXT-SNAPSHOT.md` — tech stack, module layout, auth layers, invariants (replaces architecture.md + best-practices/backend.md)
 - `.github/context/providers/ticket-manager.md` — MCP tools, operations, constants
+- `.github/context/providers/LOADING-PROTOCOL.md` — provider loading steps (use for Step 0)
 
 ---
 
@@ -29,18 +30,9 @@ Read before starting:
 
 ### Step 0 — Load Ticket Manager Provider (MANDATORY FIRST STEP)
 
-1. Read `.github/context/providers/ticket-manager.md`
-2. If the file is a placeholder (contains only HTML comments), **no MCP provider is configured** — skip MCP steps and ask the user for ticket details manually
-3. If configured, extract the **Load pattern** from `## MCP Loading` and call:
+Follow the **Standard Provider Loading Steps** from `.github/context/providers/LOADING-PROTOCOL.md` for the **ticket-manager** provider (`.github/context/providers/ticket-manager.md`).
 
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_provider}
-```
-
-Wait for results. Only after this call completes can you call any provider tools.
-
-4. Extract **Constants** (project key, ticket pattern, etc.) for use in subsequent steps.
+Extract and store the **Constants** (project key, ticket pattern, status IDs) for use in all subsequent steps.
 
 ---
 
@@ -64,19 +56,23 @@ Extract from the response (field names vary by provider — refer to the provide
 - Recent comments
 - Linked issues
 
-### Step 3 — Determine Create vs Update
+### Step 3 — Update Ticket Status
+
+If a ticket was successfully fetched, use the **update-ticket** operation from `context/providers/ticket-manager.md` to set its status to **In Analysis** (`status_id_in_analysis` from provider Constants — skip if the constant is not defined).
+
+### Step 4 — Determine Create vs Update
 
 **Create:** `docs/AI-analysis-plan-docs/{TICKET-ID}/` does not exist  
 **Update:** Folder exists — read existing `ANALYSIS-{TICKET-ID}.md` before modifying
 
-### Step 4 — Gather Context (Specification-Driven Order)
+### Step 5 — Gather Context (Specification-Driven Order)
 
 **MANDATORY: Read in this order.**
 
 **Phase 1: Functional Documentation — read in PARALLEL**
 
 1. `.github/context/PRD.md` — authoritative product requirements
-2. `.github/context/architecture.md` — module structure and invariants
+2. `.github/context/CONTEXT-SNAPSHOT.md` — tech stack, module layout, invariants (already loaded if following Prerequisites)
 3. Any external specs referenced in `PRD.md` for the relevant feature area
 
 Search each for keywords from the ticket. Extract the TRUE requirements.
@@ -92,7 +88,7 @@ Search and read source files relevant to the ticket. For every implementation de
 - Do tests validate correct behavior per spec? If NO → tests are wrong
 - Are there gaps between spec and implementation?
 
-### Step 5 — Draft Analysis Document
+### Step 6 — Draft Analysis Document
 
 Follow structure from `analysis.instructions.md`:
 
@@ -113,13 +109,50 @@ Follow structure from `analysis.instructions.md`:
 ## References
 ```
 
-### Step 6 — Create or Update File
+### Step 7 — Create or Update File
 
 Write to `docs/AI-analysis-plan-docs/{TICKET-ID}/ANALYSIS-{TICKET-ID}.md`.
 
 For multi-ticket work: use a combined folder `{TICKET-A}-{TICKET-B}/` if they share implementation.
 
-### Step 7 — Validate
+### Step 8 — Post Analysis Comment to Ticket
+
+After writing the analysis file, call the **update-ticket** operation from `context/providers/ticket-manager.md` to add a comment to the Redmine ticket with the key sections of the analysis.
+
+Build the `notes` value as follows. **All content must be in Textile markup** (see `context/providers/ticket-manager.md` → Output Format). Content copied from the Markdown analysis file must be converted to Textile — no `##`, no backticks, no `**bold**`.
+
+```textile
+*[AI Analysis]* — {TICKET-ID}: {ticket title}
+*Branch:* {suggested branch name}
+
+----
+
+h2. Problem Statement
+
+{full content of the Problem Statement section, converted to Textile}
+
+----
+
+h2. Proposed Solution
+
+{full content of the Proposed Solution section, converted to Textile}
+
+----
+
+h2. Implementation Plan
+
+{full content of the Step-by-Step Plan sub-section, including step titles and all action items, converted to Textile}
+
+----
+
+Analysis document: @docs/AI-analysis-plan-docs/{TICKET-ID}/ANALYSIS-{TICKET-ID}.md@
+```
+
+Use `curl` via `run_in_terminal` as documented in `context/providers/ticket-manager.md` → **update-ticket**, passing `notes` in the request body.
+
+> This step runs for both **create** and **update** cases. If the ticket was not found in Step 2, skip this step.
+
+### Step 9 — Validate
 
 - [ ] Problem Statement references spec (cites `PRD.md` or external spec)
 - [ ] Bugs found during Phase 3 are documented in Risks or Problem Statement

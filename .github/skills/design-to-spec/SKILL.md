@@ -28,18 +28,11 @@ Read before starting:
 
 ### Step 0 — Load Provider and MCP Tools (MANDATORY FIRST STEP)
 
-1. Read `.github/context/providers/design-tool.md`
-2. If the file is a placeholder (contains only HTML comments), **no design MCP is configured** — ask the user to describe the design or provide screenshots, then proceed to Step 4 manually
-3. If configured, extract the **Load pattern** from `## MCP Loading` and call:
+Follow the **Standard Provider Loading Steps** from `.github/context/providers/LOADING-PROTOCOL.md` for the **design-tool** provider (`.github/context/providers/design-tool.md`).
 
-```
-tool_search_tool_regex
-  pattern: {load_pattern_from_provider}
-```
+> This project marks design-tool as N/A (backend-only). If the provider file starts with a "Not applicable" banner, skip all MCP steps and proceed to Step 4 using manual input or screenshots.
 
-Wait for results. If no tools are found, the MCP server is not available — fall back to manual input.
-
-4. Extract **Constants** for use in subsequent steps.
+Extract **Constants** for use in subsequent steps if provider is active.
 
 ---
 

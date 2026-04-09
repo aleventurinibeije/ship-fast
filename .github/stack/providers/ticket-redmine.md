@@ -10,6 +10,12 @@
 | Base URL | `<<REDMINE_BASE_URL>>` <!-- e.g. https://redmine.example.com --> |
 | Ticket pattern | `#\d+` |
 | API key env var | `<<REDMINE_API_KEY>>` |
+| Tracker ID: parent ticket | `<<TRACKER_ID_PARENT>>` <!-- e.g. Epic, Feature — find at /trackers --> |
+| Tracker ID: child ticket | `<<TRACKER_ID_CHILD>>` <!-- e.g. Task — find at /trackers --> |
+| Status ID: Open | `<<STATUS_ID_OPEN>>` <!-- find at /issue_statuses --> |
+| Status ID: In Analysis | `<<STATUS_ID_IN_ANALYSIS>>` <!-- optional — leave blank if not used --> |
+| Status ID: In Development | `<<STATUS_ID_IN_DEV>>` <!-- optional — leave blank if not used --> |
+| Status ID: In Review | `<<STATUS_ID_IN_REVIEW>>` <!-- optional — leave blank if not used --> |
 
 ## Authentication
 
@@ -56,7 +62,7 @@ Create a new issue.
   curl -s -X POST \
     -H "X-Redmine-API-Key: $REDMINE_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"issue": {"project_id": "<<REDMINE_PROJECT_ID>>", "subject": "...", "description": "...", "tracker_id": 2}}' \
+    -d '{"issue": {"project_id": "<<REDMINE_PROJECT_ID>>", "subject": "...", "description": "...", "tracker_id": <<TRACKER_ID_CHILD>>, "status_id": <<STATUS_ID_OPEN>>}}' \
     "<<REDMINE_BASE_URL>>/issues.json"
   ```
 - **Body fields (`issue` object):**

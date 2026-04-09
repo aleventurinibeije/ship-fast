@@ -10,12 +10,13 @@
      and output format rules — they NEVER hardcode MCP tool references.
 
      SETUP STEPS:
-     1. Go to the .github/variants/providers/ folder
+     1. Go to the .github/stack/providers/ folder
      2. Copy the variant that matches your tools:
-           cp variants/providers/ticket-jira-atlassian-mcp.md context/providers/ticket-manager.md
-           cp variants/providers/review-gitlab-mcp.md         context/providers/code-review.md
-           cp variants/providers/design-figma-mcp.md          context/providers/design-tool.md
+           cp stack/providers/ticket-jira.md     context/providers/ticket-manager.md
+           cp stack/providers/review-github.md   context/providers/code-review.md
+           cp stack/providers/design-figma.md    context/providers/design-tool.md
      3. Edit the copied files — fill in your project-specific constants.
+     Or run `@bootstrap` — it collects constants from you and writes these files automatically.
 
      ACTIVE FILES (must use these exact names):
      - ticket-manager.md  ← ticket/issue tracker (Jira, Redmine, GitHub Issues, etc.)
