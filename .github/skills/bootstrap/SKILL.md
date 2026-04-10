@@ -104,6 +104,7 @@ Chiedi all'utente le seguenti costanti tramite `vscode/askQuestions` (tutte obbl
 **Code review (GitHub):**
 - Owner / organizzazione GitHub (es. `wrap-repo`)
 - Nome del repository GitHub (es. `LAB-OmniseeAiBE`)
+- Branch principale dove confluiscono i development (es. `develop`, `main`, `master`)
 
 **Ticket manager — chiedi quale tracker:**
 - Opzioni: Redmine, Jira, GitHub Issues
@@ -216,9 +217,10 @@ If the existing best-practices file already contains a `## Project-Specific Conv
 
 **code-review.md:**
 1. Read `stack/providers/review-github.md` (or `review-gitlab.md` if user chose GitLab)
-2. Replace all `{{OWNER}}` placeholders with the collected owner value
-3. Replace all `{{REPO}}` placeholders with the collected repo name value
-4. Write to `context/providers/code-review.md`
+2. Replace all `<<GITHUB_OWNER>>` placeholders with the collected owner value
+3. Replace all `<<GITHUB_REPO>>` placeholders with the collected repo name value
+4. Replace all `<<MAIN_BRANCH>>` placeholders with the collected main branch value
+5. Write to `context/providers/code-review.md`
 
 **ticket-manager.md:**
 1. Read the matching template from `stack/providers/`:

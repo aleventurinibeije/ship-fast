@@ -13,6 +13,7 @@
 |----------|-------|
 | Project ID (numeric) | `<<GITLAB_PROJECT_ID>>` |
 | Base URL | <!-- e.g. https://gitlab.example.com --> |
+| Main branch | `<<MAIN_BRANCH>>` |
 | Changeset parameter name | `merge_request_iid` |
 | Changeset URL pattern | `{BASE_URL}/{group}/{project}/-/merge_requests/{iid}` |
 
@@ -58,6 +59,21 @@ Fetch existing review discussions on a changeset.
   - `merge_request_iid`: Integer MR ID
 - **Response fields:**
   - Array of discussion threads, each with `notes[]` containing `body`, `author.name`, `resolved`
+
+### create-pr
+
+Open a new merge request.
+
+- **Tool:** `mcp_io_modelconte_gitlab-mcp___create_merge_request`
+- **Parameters:**
+  - `project_id`: Numeric project ID (from Constants)
+  - `title`: MR title
+  - `description`: MR description in Markdown
+  - `source_branch`: Source branch name
+  - `target_branch`: Target branch (use Main branch from Constants)
+- **Response fields:**
+  - `iid` → MR iid
+  - `web_url` → MR URL
 
 ### post-changeset-comment
 
