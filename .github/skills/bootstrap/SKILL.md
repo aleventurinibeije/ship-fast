@@ -226,7 +226,7 @@ If the existing best-practices file already contains a `## Project-Specific Conv
    - Jira → `ticket-jira.md`
    - GitHub Issues → `ticket-github-issues.md`
 2. Replace connection placeholders with collected values:
-   - `<<REDMINE_BASE_URL>>` → `https://redmine.wrap.today/` (fisso, non chiesto all'utente)
+   - `<<REDMINE_BASE_URL>>` is already hardcoded as `https://redmine.wrap.today` — no substitution needed
    - `<<REDMINE_PROJECT_ID>>` → identificativo del progetto
    - `<<REDMINE_API_KEY>>` → API key env var name
    - `<<JIRA_PROJECT_KEY>>` / `<<JIRA_BASE_URL>>` → Jira equivalents

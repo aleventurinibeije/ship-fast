@@ -7,7 +7,7 @@
 | Constant | Value |
 |----------|-------|
 | Project identifier | `<<REDMINE_PROJECT_ID>>` |
-| Base URL | `<<REDMINE_BASE_URL>>` <!-- e.g. https://redmine.example.com --> |
+| Base URL | `https://redmine.wrap.today` |
 | Ticket pattern | `#\d+` |
 | API key env var | `<<REDMINE_API_KEY>>` |
 | Tracker ID: parent ticket | `9` <!-- Epica --> |
@@ -36,11 +36,11 @@ The API key is found at `/my/account` when logged in. Store it in the `REDMINE_A
 Fetch an issue's full details.
 
 - **Method:** `GET`
-- **Endpoint:** `<<REDMINE_BASE_URL>>/issues/[id].json?include=journals`
+- **Endpoint:** `https://redmine.wrap.today/issues/[id].json?include=journals`
 - **curl example:**
   ```sh
   curl -s -H "X-Redmine-API-Key: $REDMINE_API_KEY" \
-    "<<REDMINE_BASE_URL>>/issues/[id].json?include=journals"
+    "https://redmine.wrap.today/issues/[id].json?include=journals"
   ```
 - **Response fields:**
   - `issue.subject` → ticket title
@@ -55,21 +55,21 @@ Fetch an issue's full details.
 Create a new issue.
 
 - **Method:** `POST`
-- **Endpoint:** `<<REDMINE_BASE_URL>>/issues.json`
+- **Endpoint:** `https://redmine.wrap.today/issues.json`
 - **Headers:** `Content-Type: application/json`
 - **curl example:**
   ```sh
   curl -s -X POST \
     -H "X-Redmine-API-Key: $REDMINE_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"issue": {"project_id": "<<REDMINE_PROJECT_ID>>", "subject": "...", "description": "...", "tracker_id": <<TRACKER_ID_CHILD>>, "status_id": <<STATUS_ID_OPEN>>}}' \
-    "<<REDMINE_BASE_URL>>/issues.json"
+    -d '{"issue": {"project_id": "<<REDMINE_PROJECT_ID>>", "subject": "...", "description": "...", "tracker_id": 13, "status_id": 12}}' \
+    "https://redmine.wrap.today/issues.json"
   ```
 - **Body fields (`issue` object):**
   - `project_id`: Project identifier (string)
   - `subject`: Issue title
-  - `description`: Issue body (Textile markup)
-  - `tracker_id`: `1` = Bug, `2` = Feature, `3` = Task
+  - `description`: Issue body (Markdown)
+  - `tracker_id`: `9` = Epica, `13` = Task
   - `assigned_to_id`: User ID to assign (optional)
   - `priority_id`: Priority ID (optional)
 - **Response fields:**
@@ -80,15 +80,15 @@ Create a new issue.
 Update an issue's fields or add a comment.
 
 - **Method:** `PUT`
-- **Endpoint:** `<<REDMINE_BASE_URL>>/issues/[id].json`
+- **Endpoint:** `https://redmine.wrap.today/issues/[id].json`
 - **Headers:** `Content-Type: application/json`
 - **curl example:**
   ```sh
   curl -s -X PUT \
     -H "X-Redmine-API-Key: $REDMINE_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"issue": {"notes": "Comment text", "status_id": 2}}' \
-    "<<REDMINE_BASE_URL>>/issues/[id].json"
+    -d '{"issue": {"notes": "Comment text", "status_id": 26}}' \
+    "https://redmine.wrap.today/issues/[id].json"
   ```
 - **Body fields (`issue` object):**
   - `notes`: Comment text (optional)
@@ -99,28 +99,28 @@ Update an issue's fields or add a comment.
 
 ## Output Format
 
-Redmine uses **Textile markup**.
+Redmine is configured to use **Markdown (CommonMark)**.
 
-### Key Textile Rules
+### Key Markdown Rules
 
 | Element | Syntax |
 |---|---|
-| Heading 1 | `h1. Title` |
-| Heading 2 | `h2. Title` |
-| Bold | `*text*` |
+| Heading 1 | `# Title` |
+| Heading 2 | `## Title` |
+| Bold | `**text**` |
 | Italic | `_text_` |
-| Inline code | `@code@` |
-| Code block | `<pre><code class="java">...</code></pre>` |
-| Unordered list | `* item` |
-| Ordered list | `# item` |
-| Table header | `|_. Col A |_. Col B |` |
-| Table row | `| cell | cell |` |
-| Link | `"text":url` |
+| Inline code | `` `code` `` |
+| Code block | ` ```lang … ``` ` |
+| Unordered list | `- item` |
+| Ordered list | `1. item` |
+| Table header | `\| Col A \| Col B \|` with `\|---\|---\|` separator |
+| Table row | `\| cell \| cell \|` |
+| Link | `[text](url)` |
 
 ### Validation Rules
 
-- [ ] No Markdown syntax (no `##`, no backticks)
-- [ ] Inline code uses `@…@` not backticks
-- [ ] Code blocks use `<pre>` tags
-- [ ] Tables use `|_. ` for headers
-- [ ] Links use `"text":url` format
+- [ ] No Textile syntax (no `h2.`, no `@code@`, no `*bold*`, no `|_. header|`)
+- [ ] Inline code uses backticks
+- [ ] Code blocks use triple backticks with language hint
+- [ ] Tables use standard Markdown pipe syntax with separator row
+- [ ] Links use `[text](url)` format
