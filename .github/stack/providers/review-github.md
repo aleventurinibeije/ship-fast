@@ -4,8 +4,8 @@
 
 ## MCP Loading
 
-- **Load pattern:** `mcp_github`
-- **Tool prefix:** `mcp_github___`
+- **Load pattern:** `mcp_io_github_git`
+- **Tool prefix:** `mcp_io_github_git_`
 
 > **Deferred tools:** Call `tool_search_tool_regex` with the load pattern above **before** any tool call.
 
@@ -25,11 +25,12 @@
 
 Fetch pull request metadata.
 
-- **Tool:** `mcp_github___get_pull_request`
+- **Tool:** `mcp_io_github_git_pull_request_read`
 - **Parameters:**
+  - `method`: `"get"`
   - `owner`: Repository owner (from Constants)
   - `repo`: Repository name (from Constants)
-  - `pull_number`: Integer PR number (extracted from URL)
+  - `pullNumber`: Integer PR number (extracted from URL)
 - **Response fields:**
   - `title` → PR title
   - `body` → PR description
@@ -43,31 +44,33 @@ Fetch pull request metadata.
 
 Fetch file-level diffs for a PR.
 
-- **Tool:** `mcp_github___get_pull_request_files`
+- **Tool:** `mcp_io_github_git_pull_request_read`
 - **Parameters:**
+  - `method`: `"get_files"`
   - `owner`: Repository owner
   - `repo`: Repository name
-  - `pull_number`: Integer PR number
+  - `pullNumber`: Integer PR number
 - **Response fields:**
   - Array of files with: `filename`, `status` (added/modified/removed), `patch`, `additions`, `deletions`
 
 ### fetch-changeset-discussions
 
-Fetch review comments on a PR.
+Fetch review threads on a PR.
 
-- **Tool:** `mcp_github___list_review_comments`
+- **Tool:** `mcp_io_github_git_pull_request_read`
 - **Parameters:**
+  - `method`: `"get_review_comments"`
   - `owner`: Repository owner
   - `repo`: Repository name
-  - `pull_number`: Integer PR number
+  - `pullNumber`: Integer PR number
 - **Response fields:**
-  - Array of comments with `body`, `user.login`, `path`, `line`
+  - Array of review threads; each thread has `isResolved`, `isOutdated`, and nested comments with `body`, `user.login`, `path`, `line`
 
 ### post-changeset-comment
 
 Post a comment on a PR.
 
-- **Tool:** `mcp_github___create_issue_comment`
+- **Tool:** `mcp_io_github_git_add_issue_comment`
 - **Parameters:**
   - `owner`: Repository owner
   - `repo`: Repository name
@@ -78,11 +81,11 @@ Post a comment on a PR.
 
 Update PR fields (e.g. description).
 
-- **Tool:** `mcp_github___update_pull_request`
+- **Tool:** `mcp_io_github_git_update_pull_request`
 - **Parameters:**
   - `owner`: Repository owner
   - `repo`: Repository name
-  - `pull_number`: Integer PR number
+  - `pullNumber`: Integer PR number
   - `body`: Updated description in Markdown
 
 ## Output Format

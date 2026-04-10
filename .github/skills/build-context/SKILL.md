@@ -133,7 +133,7 @@ After writing both files, produce a gap report in the chat (do NOT write it to a
 - context/CONTEXT-SNAPSHOT.md → Env vars (read .env.example or watt.json)
 - context/integrations.md → External API URLs and keys
 - context/architecture.md → Service diagrams and Architectural Invariants
-- context/providers/ticket-manager.md → If not yet configured, run @bootstrap
+- context/providers/ticket-manager.md → If not yet configured, run @01-bootstrap
 - [any other specific gaps found]
 
 ### Documents that could not be categorized

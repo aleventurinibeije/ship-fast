@@ -59,11 +59,11 @@ Read before starting:
 Present findings and ask for confirmation using `vscode/askQuestions`:
 
 ```
-Detected the following stacks:
+Ho rilevato i seguenti stack:
 - web/platformatic-db → be-node-platformatic
 - web/platformatic-gateway → be-node-generic
 
-Is this correct? If any package is wrong, specify the correct stack from: be-node-platformatic, be-node-generic, be-java-spring, fe-react-ts, fe-vue
+È corretto? Se qualche pacchetto è errato, specifica lo stack corretto tra: be-node-platformatic, be-node-generic, be-java-spring, fe-react-ts, fe-vue
 ```
 
 Accept corrections before proceeding.
@@ -87,42 +87,39 @@ Count files that are **not** index stubs (i.e. more than ~5 lines of substantive
 
 Store the result per package: `[{ package: "web/platformatic-db", stack: "be-node-platformatic", maturity: "existing" }, ...]`
 
-> If extraction is enabled for at least one package, ask the user once:
+> Se l'estrazione è abilitata per almeno un pacchetto, chiedi all'utente una sola volta:
 > ```
-> Found an existing codebase in {packages}. I can introspect your source files to extract 
-> project-specific conventions and generate a real architecture.md. This may take a moment.
-> Proceed with code extraction? (Y/N)
+> Ho trovato una codebase esistente in {packages}. Posso analizzare i sorgenti per estrarre
+> le convenzioni del progetto e generare un architecture.md reale. Potrebbe richiedere un momento.
+> Procedere con l'estrazione del codice? (S/N)
 > ```
-> If the user declines, treat all packages as greenfield for the remaining steps.
+> Se l'utente rifiuta, tratta tutti i pacchetti come greenfield per i passi successivi.
 
 ---
 
 ### Step 3 — Collect Provider Constants
 
-Ask the user for the following constants via `vscode/askQuestions` (all required unless marked optional):
+Chiedi all'utente le seguenti costanti tramite `vscode/askQuestions` (tutte obbligatorie salvo diversa indicazione):
 
 **Code review (GitHub):**
-- GitHub owner / organization (e.g. `wrap-repo`)
-- GitHub repository name (e.g. `LAB-OmniseeAiBE`)
+- Owner / organizzazione GitHub (es. `wrap-repo`)
+- Nome del repository GitHub (es. `LAB-OmniseeAiBE`)
 
-**Ticket manager — ask which tracker:**
-- Options: Redmine, Jira, GitHub Issues
-- If **Redmine**:
-  - Base URL (e.g. `https://pm.example.com`)
-  - Project identifier (e.g. `my-project`)
-  - API key env var name (e.g. `REDMINE_API_KEY`)
-  - Tracker ID for **parent/module tickets** (e.g. Epic, Feature — find the ID at `{base-url}/trackers`)
-  - Tracker ID for **child/activity tickets** (e.g. Task — find the ID at `{base-url}/trackers`)
-  - Status ID for **Open** (e.g. `1` — find at `{base-url}/issue_statuses.json`)
-  - Status IDs for workflow states *(optional — leave blank to skip)*: In Analysis, In Development, In Review
-- If **Jira**: Jira base URL, project key (e.g. `MYAPP`), Atlassian MCP already configured? (Y/N)
-- If **GitHub Issues**: same owner/repo as code review (confirm)
+**Ticket manager — chiedi quale tracker:**
+- Opzioni: Redmine, Jira, GitHub Issues
+- Se **Redmine**:
+  - L'URL base è fisso: `https://redmine.wrap.today/` — **non chiedere all'utente**
+  - Identificativo del progetto (es. `my-project`)
+  - Nome della variabile d'ambiente per l'API key (es. `REDMINE_API_KEY`) — se non ancora presente, va aggiunta al file `.env`; la chiave si trova su Redmine in **Il mio utente → Chiave di accesso API**
+  - *(Tracker e status ID sono fissi — già configurati nel template, non chiedere all'utente)*
+- Se **Jira**: URL base di Jira, project key (es. `MYAPP`), MCP Atlassian già configurato? (S/N)
+- Se **GitHub Issues**: stesso owner/repo del code review (conferma)
 
-> **Tip for finding Redmine IDs:** Open `{base-url}/trackers` (requires admin) for tracker IDs and `{base-url}/issue_statuses.json` for status IDs. Alternatively, fetch any issue via the API — the `tracker.id` and `status.id` fields are included in the response.
-
-**Design tool (optional):**
-- Figma enabled? (Y/N)
-- If yes: Figma token env var name (e.g. `FIGMA_TOKEN`)
+**Design tool (opzionale):**
+- Figma abilitato? (S/N)
+- Se sì:
+  - Team ID Figma (es. `123456789` — trovalo nell'URL di Figma: figma.com/files/team/**{teamId}**/...)
+  - File key predefinito del progetto (es. `abc123DEF456` — dalla URL del file Figma: figma.com/design/**{fileKey}**/...)
 
 ---
 
@@ -229,22 +226,17 @@ If the existing best-practices file already contains a `## Project-Specific Conv
    - Jira → `ticket-jira.md`
    - GitHub Issues → `ticket-github-issues.md`
 2. Replace connection placeholders with collected values:
-   - `<<REDMINE_BASE_URL>>` → base URL
-   - `<<REDMINE_PROJECT_ID>>` → project identifier
+   - `<<REDMINE_BASE_URL>>` → `https://redmine.wrap.today/` (fisso, non chiesto all'utente)
+   - `<<REDMINE_PROJECT_ID>>` → identificativo del progetto
    - `<<REDMINE_API_KEY>>` → API key env var name
    - `<<JIRA_PROJECT_KEY>>` / `<<JIRA_BASE_URL>>` → Jira equivalents
    - `<<GITHUB_OWNER>>` / `<<GITHUB_REPO>>` → GitHub Issues equivalents
 3. Replace tracker/status ID placeholders with collected values:
-   - `<<TRACKER_ID_PARENT>>` → parent ticket tracker ID (or leave placeholder if not collected)
-   - `<<TRACKER_ID_CHILD>>` → child ticket tracker ID
-   - `<<STATUS_ID_OPEN>>` → open status ID
-   - `<<STATUS_ID_IN_ANALYSIS>>` → in-analysis status ID (replace with empty string if user skipped)
-   - `<<STATUS_ID_IN_DEV>>` → in-development status ID (replace with empty string if user skipped)
-   - `<<STATUS_ID_IN_REVIEW>>` → in-review status ID (replace with empty string if user skipped)
+   - Tracker and status IDs are already hardcoded in `ticket-redmine.md` — no substitution needed
 4. Write to `context/providers/ticket-manager.md`
 
 **design-tool.md:**
-- If Figma enabled: read `stack/providers/design-figma.md`, replace `{{FIGMA_TOKEN_ENV}}`, write to `context/providers/design-tool.md`
+- If Figma enabled: read `stack/providers/design-figma.md`, replace `{{TEAM_ID}}` and `{{DEFAULT_FILE_KEY}}` with collected values, write to `context/providers/design-tool.md`
 - If not enabled: write a N/A banner to `context/providers/design-tool.md`:
   ```markdown
   <!-- N/A: No design tool configured for this project. Skills must skip all design MCP steps. -->
@@ -258,7 +250,7 @@ For each of these files, if it does NOT already exist, create it with a placehol
 
 **`context/CONTEXT-SNAPSHOT.md`**:
 ```markdown
-> ⚠️ PLACEHOLDER — Run `@context-builder` to generate this file from your docs/, or fill it in manually.
+> ⚠️ PLACEHOLDER — Run `@02-context-builder` to generate this file from your docs/, or fill it in manually.
 > Last updated: YYYY-MM-DD (bootstrap scaffolded)
 
 # Context Snapshot — {PROJECT_NAME}
@@ -272,13 +264,13 @@ For each of these files, if it does NOT already exist, create it with a placehol
 ⚠️ Fill in manually.
 
 ## Domain Model
-⚠️ Run `@context-builder` or fill in manually.
+⚠️ Run `@02-context-builder` or fill in manually.
 
 ## Auth Layers
 ⚠️ Fill in manually.
 
 ## Mandatory Conventions
-⚠️ Fill in manually or run `@context-builder`.
+⚠️ Fill in manually or run `@02-context-builder`.
 
 ## Testing
 ⚠️ Fill in manually (test commands, coverage targets).
@@ -286,7 +278,7 @@ For each of these files, if it does NOT already exist, create it with a placehol
 
 **`context/PRD.md`**:
 ```markdown
-> ⚠️ PLACEHOLDER — Run `@context-builder` to generate this file from your docs/, or fill it in manually following .github/instructions/prd.instructions.md.
+> ⚠️ PLACEHOLDER — Run `@02-context-builder` to generate this file from your docs/, or fill it in manually following .github/instructions/prd.instructions.md.
 ```
 
 **`context/architecture.md`**:
@@ -389,8 +381,8 @@ After scaffolding:
 1. List all `.md` files found in `docs/` (if the folder exists).
 2. If files are found, ask the user:
    ```
-   Found {N} document(s) in docs/. Would you like to run `@context-builder` now to generate 
-   context/PRD.md and context/CONTEXT-SNAPSHOT.md from them?
+   Ho trovato {N} documento/i in docs/. Vuoi eseguire `@02-context-builder` ora per generare
+   context/PRD.md e context/CONTEXT-SNAPSHOT.md a partire da essi?
    ```
 3. If yes: invoke the `build-context` skill.
 4. If no (or `docs/` is empty): print a summary of what bootstrap created and list the manual fill-in items from the scaffolded placeholder files.

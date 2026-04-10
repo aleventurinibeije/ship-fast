@@ -6,18 +6,18 @@
 
 ## Agent Registry
 
-| Task | Agent |
-|------|-------|
-| Implement a ticket, fix a bug, write tests | `dev` |
-| Create or update a technical analysis document for a ticket | `analysis` |
-| Convert design files to component specifications | `design` |
-| Review a changeset (MR/PR) by URL | `review` |
-| Write a changeset (MR/PR) description for a ticket | `changeset-description` |
-| Write a ticket description in the configured tracker's format | `ticket-description` |
-| Create tickets from PRD and sync references back | `prd-tickets` |
-| Configure .github/context/ for a new project | `bootstrap` |
-| Generate PRD + CONTEXT-SNAPSHOT from raw docs in docs/ | `context-builder` |
-| Create or update the PRD from analysis docs and user stories | `prd-writer` |
+| # | Task | Agent |
+|---|------|-------|
+| 1 | Configure .github/context/ for a new project | `01-bootstrap` |
+| 2 | Generate PRD + CONTEXT-SNAPSHOT from raw docs in docs/ | `02-context-builder` |
+| 3 | Create or update the PRD from analysis docs and user stories | `03-prd-writer` |
+| 4 | Create tickets from PRD and sync references back | `04-prd-tickets` |
+| 5 | Convert design files to component specifications | `05-design` |
+| 6 | Create or update a technical analysis document for a ticket | `06-analysis` |
+| 7 | Write a ticket description in the configured tracker's format | `07-ticket-description` |
+| 8 | Implement a ticket, fix a bug, write tests | `08-dev` |
+| 9 | Review a changeset (MR/PR) by URL | `09-review` |
+| 10 | Write a changeset (MR/PR) description for a ticket | `10-changeset-description` |
 
 ---
 

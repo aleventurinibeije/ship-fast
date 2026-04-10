@@ -10,12 +10,12 @@
 | Base URL | `<<REDMINE_BASE_URL>>` <!-- e.g. https://redmine.example.com --> |
 | Ticket pattern | `#\d+` |
 | API key env var | `<<REDMINE_API_KEY>>` |
-| Tracker ID: parent ticket | `<<TRACKER_ID_PARENT>>` <!-- e.g. Epic, Feature — find at /trackers --> |
-| Tracker ID: child ticket | `<<TRACKER_ID_CHILD>>` <!-- e.g. Task — find at /trackers --> |
-| Status ID: Open | `<<STATUS_ID_OPEN>>` <!-- find at /issue_statuses --> |
-| Status ID: In Analysis | `<<STATUS_ID_IN_ANALYSIS>>` <!-- optional — leave blank if not used --> |
-| Status ID: In Development | `<<STATUS_ID_IN_DEV>>` <!-- optional — leave blank if not used --> |
-| Status ID: In Review | `<<STATUS_ID_IN_REVIEW>>` <!-- optional — leave blank if not used --> |
+| Tracker ID: parent ticket | `9` <!-- Epica --> |
+| Tracker ID: child ticket | `13` <!-- Task --> |
+| Status ID: Open | `12` |
+| Status ID: In Analysis | `9` |
+| Status ID: In Development | `26` |
+| Status ID: In Review | `17` |
 
 ## Authentication
 

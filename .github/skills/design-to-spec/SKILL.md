@@ -53,14 +53,13 @@ Using the design-tool provider's operations:
 Call the **fetch-design-file** operation to get the file's top-level page/frame structure.
 
 **2b. Fetch target frames/components:**
-For each target frame or component, call the **fetch-frame** operation to get:
-- Layout properties (direction, gap, padding)
-- Visual properties (fills, strokes, effects)
-- Dimensions and constraints
-- Children/nested layers
+For each target frame or component, call the **fetch-design-context** operation to get:
+- Reference code (React+Tailwind — adapt to project stack)
+- Screenshot of the rendered node
+- Code Connect snippets or design annotations if present
 
-**2c. Fetch shared styles** (optional):
-Call the **fetch-component-styles** operation to get the design system's shared styles (colors, typography, effects).
+**2c. Fetch design tokens** (optional):
+Call the **fetch-variable-defs** operation to get the design system's token values (colors, spacing, typography). Map them to the project's CSS variables or theme tokens.
 
 ### Step 3 — Read Frontend Conventions
 

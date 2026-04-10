@@ -16,7 +16,7 @@
            cp stack/providers/review-github.md   context/providers/code-review.md
            cp stack/providers/design-figma.md    context/providers/design-tool.md
      3. Edit the copied files — fill in your project-specific constants.
-     Or run `@bootstrap` — it collects constants from you and writes these files automatically.
+     Or run `@01-bootstrap` — it collects constants from you and writes these files automatically.
 
      ACTIVE FILES (must use these exact names):
      - ticket-manager.md  ← ticket/issue tracker (Jira, Redmine, GitHub Issues, etc.)

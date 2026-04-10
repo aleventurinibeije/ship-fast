@@ -20,7 +20,7 @@ Un framework portabile per GitHub Copilot Agent, pensato per progetti BE + FE. F
 
 ## Quick Start
 
-**Option A — Automated (recommended):** run `@bootstrap` after copying `.github/` to let the agent detect your stack, collect provider constants, and scaffold all config files automatically.
+**Option A — Automated (recommended):** run `@01-bootstrap` after copying `.github/` to let the agent detect your stack, collect provider constants, and scaffold all config files automatically.
 
 **Option B — Manual:**
 

@@ -49,5 +49,5 @@ Bootstrap copies the selected provider template to `context/providers/ticket-man
 
 1. Copy the entire `.github/` folder into the new project root
 2. Delete `context/` files that are project-specific (PRD.md, CONTEXT-SNAPSHOT.md, architecture.md, integrations.md, best-practices/, providers/ — keep LOADING-PROTOCOL.md)
-3. Run `@bootstrap` — the skill will detect the stack, ask for provider constants, and regenerate `context/`
-4. If the project has existing documentation in `docs/`, run `@context-builder` — it will generate `PRD.md` and `CONTEXT-SNAPSHOT.md` from those docs
+3. Run `@01-bootstrap` — the skill will detect the stack, ask for provider constants, and regenerate `context/`
+4. If the project has existing documentation in `docs/`, run `@02-context-builder` — it will generate `PRD.md` and `CONTEXT-SNAPSHOT.md` from those docs

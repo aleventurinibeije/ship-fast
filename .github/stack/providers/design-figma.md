@@ -2,8 +2,8 @@
 
 ## MCP Loading
 
-- **Load pattern:** `mcp_figma`
-- **Tool prefix:** `mcp_figma___`
+- **Load pattern:** `mcp_com_figma_mcp`
+- **Tool prefix:** `mcp_com_figma_mcp_`
 
 > **Deferred tools:** Call `tool_search_tool_regex` with the load pattern above **before** any tool call. Tools are NOT available until loaded. If no tools are found, Figma MCP is not configured — fall back to manual design input.
 
@@ -11,61 +11,62 @@
 
 | Constant | Value |
 |----------|-------|
-| Team ID | <!-- e.g. 123456789 --> |
-| Default file key | <!-- e.g. abc123DEF456 --> |
+| Team ID | {{TEAM_ID}} |
+| Default file key | {{DEFAULT_FILE_KEY}} |
 
 ## Operations
 
 ### fetch-design-file
 
-Fetch a Figma file's metadata and top-level structure.
+Fetch a Figma file's metadata and top-level node structure (for browsing pages/frames).
 
-- **Tool:** `mcp_figma___get_file`
+- **Tool:** `mcp_com_figma_mcp_get_metadata`
 - **Parameters:**
-  - `file_key`: Figma file key (from URL or Constants)
-- **Response fields:**
-  - `name` → file name
-  - `document.children[]` → pages, each with `children[]` frames
+  - `fileKey`: Figma file key (from URL or Constants)
+  - `nodeId` *(optional)*: Scope to a specific node; omit for the full file
+- **Response:** XML document listing node IDs, types, names, positions, and sizes — use this to discover node IDs before calling `fetch-design-context`
 
-### fetch-frame
+---
 
-Fetch details of a specific frame or component within a file.
+### fetch-design-context
 
-- **Tool:** `mcp_figma___get_node`
+**Primary tool.** Fetch design context, reference code (React+Tailwind), and a screenshot for a specific node.
+
+- **Tool:** `mcp_com_figma_mcp_get_design_context`
 - **Parameters:**
-  - `file_key`: Figma file key
-  - `node_id`: Node ID (e.g. `1:234`)
-- **Response fields:**
-  - `name` → frame/component name
-  - `type` → FRAME / COMPONENT / INSTANCE
-  - `children[]` → nested layers
-  - `absoluteBoundingBox` → position and dimensions
-  - `fills[]` → fill colors/gradients
-  - `strokes[]` → stroke styles
-  - `effects[]` → shadows, blurs
+  - `fileKey`: Figma file key
+  - `nodeId`: Node ID (e.g. `1:234`) — use `"0:1"` for the root if no specific node
+  - `clientFrameworks` *(optional)*: e.g. `["react"]`
+  - `clientLanguages` *(optional)*: e.g. `["typescript"]`
+- **Response:**
+  - `code` → reference implementation in React+Tailwind (adapt to project stack)
+  - `screenshot` → rendered image of the node
+  - Code Connect snippets if mapped, or design annotations if present
 
-### fetch-component-styles
+> **Always prefer this tool** over lower-level operations for component implementation.
 
-Fetch shared styles and components from a file.
+---
 
-- **Tool:** `mcp_figma___get_file_styles`
+### fetch-screenshot
+
+Get a screenshot of a specific node (without code context).
+
+- **Tool:** `mcp_com_figma_mcp_get_screenshot`
 - **Parameters:**
-  - `file_key`: Figma file key
-- **Response fields:**
-  - Array of styles with `key`, `name`, `style_type` (FILL, TEXT, EFFECT, GRID)
+  - `fileKey`: Figma file key
+  - `nodeId`: Node ID
+- **Response:** PNG screenshot of the node
 
-### fetch-images
+---
 
-Export frames/nodes as images.
+### fetch-variable-defs
 
-- **Tool:** `mcp_figma___get_images`
+Fetch design token / variable definitions (colors, spacing, typography, etc.).
+
+- **Tool:** `mcp_com_figma_mcp_get_variable_defs`
 - **Parameters:**
-  - `file_key`: Figma file key
-  - `ids`: Comma-separated node IDs
-  - `format`: `png` | `svg` | `jpg` | `pdf`
-  - `scale`: Numeric scale (e.g. `2` for 2x)
-- **Response fields:**
-  - `images` → map of node ID → image URL
+  - `fileKey`: Figma file key
+- **Response:** Variable collections with resolved values — use to map design tokens to project CSS vars or theme values
 
 ## Output Format
 
