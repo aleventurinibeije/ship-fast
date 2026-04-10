@@ -119,33 +119,33 @@ For multi-ticket work: use a combined folder `{TICKET-A}-{TICKET-B}/` if they sh
 
 After writing the analysis file, call the **update-ticket** operation from `context/providers/ticket-manager.md` to add a comment to the Redmine ticket with the key sections of the analysis.
 
-Build the `notes` value as follows. **All content must be in Textile markup** (see `context/providers/ticket-manager.md` → Output Format). Content copied from the Markdown analysis file must be converted to Textile — no `##`, no backticks, no `**bold**`.
+Build the `notes` value as follows. **All content must be in Markdown** (see `context/providers/ticket-manager.md` → Output Format).
 
-```textile
-*[AI Analysis]* — {TICKET-ID}: {ticket title}
-*Branch:* {suggested branch name}
+```markdown
+**[AI Analysis]** — {TICKET-ID}: {ticket title}
+**Branch:** {suggested branch name}
 
-----
+---
 
-h2. Problem Statement
+## Problem Statement
 
-{full content of the Problem Statement section, converted to Textile}
+{full content of the Problem Statement section}
 
-----
+---
 
-h2. Proposed Solution
+## Proposed Solution
 
-{full content of the Proposed Solution section, converted to Textile}
+{full content of the Proposed Solution section}
 
-----
+---
 
-h2. Implementation Plan
+## Implementation Plan
 
-{full content of the Step-by-Step Plan sub-section, including step titles and all action items, converted to Textile}
+{full content of the Step-by-Step Plan sub-section, including step titles and all action items}
 
-----
+---
 
-Analysis document: @docs/AI-analysis-plan-docs/{TICKET-ID}/ANALYSIS-{TICKET-ID}.md@
+Analysis document: `docs/AI-analysis-plan-docs/{TICKET-ID}/ANALYSIS-{TICKET-ID}.md`
 ```
 
 Use `curl` via `run_in_terminal` as documented in `context/providers/ticket-manager.md` → **update-ticket**, passing `notes` in the request body.

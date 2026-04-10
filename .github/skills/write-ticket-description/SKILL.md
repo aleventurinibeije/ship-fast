@@ -63,7 +63,7 @@ Read the `## Output Format` section from the provider config and apply **all** i
 
 The output format varies by provider:
 - **Jira:** Jira wiki markup (headings `h1.`, lists `* item`, code `{code:lang}…{code}`)
-- **Redmine:** Textile markup (headings `h1.`, code `<pre>…</pre>`)
+- **Redmine:** Markdown (headings `##`, code ` ```lang … ``` `)
 - **GitHub Issues:** GitHub-flavored Markdown
 - **Others:** Follow the rules documented in the provider config
 
